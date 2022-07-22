@@ -53,8 +53,8 @@ def get_all_tags():
 
 
 tags = get_all_tags()
-with open("tags.json", 'w', encoding='utf-8') as f:
+with open("json/tags.json", 'w', encoding='utf-8') as f:
     dump(tags, f, ensure_ascii=False, indent=4)
 
-with open("tags_ascii.json", 'w', encoding='utf-8') as f:
+with open("json/tags_ascii.json", 'w', encoding='utf-8') as f:
     dump(tags, f, ensure_ascii=False, indent=4)
