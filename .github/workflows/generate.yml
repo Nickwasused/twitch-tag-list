@@ -16,6 +16,9 @@ jobs:
           python-version: "3.8.10"
           cache: 'pip'
       - name: Run
+        env:
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         run: pip --disable-pip-version-check install -r requirements.txt && python main.py
       - name: Release
         uses: fnkr/github-action-ghr@v1
