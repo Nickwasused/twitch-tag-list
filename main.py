@@ -37,9 +37,8 @@ def get_all_tags():
             'client-id': getenv('CLIENT_ID'),
             'Authorization': f'Bearer {token}'
         })
-        content_b = x.text
-        content = loads(content_b)
 
+        content = loads(x.text)
         try:
             cursor = content["pagination"]["cursor"]
         except KeyError:
@@ -54,5 +53,8 @@ def get_all_tags():
 
 
 tags = get_all_tags()
-with open("tags.json", 'w') as f:
-    dump(tags, f, indent=4)
+with open("tags.json", 'w', encoding='utf-8') as f:
+    dump(tags, f, ensure_ascii=False, indent=4)
+
+with open("tags_ascii.json", 'w', encoding='utf-8') as f:
+    dump(tags, f, ensure_ascii=False, indent=4)
