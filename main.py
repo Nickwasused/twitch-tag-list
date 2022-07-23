@@ -56,5 +56,11 @@ tags = get_all_tags()
 with open("json/tags.json", 'w', encoding='utf-8') as f:
     dump(tags, f, ensure_ascii=False, indent=4)
 
+with open("json/tags.min.json", 'w', encoding='utf-8') as f:
+    dump(tags, f, ensure_ascii=False)
+
 with open("json/tags_ascii.json", 'w', encoding='utf-8') as f:
-    dump(tags, f, ensure_ascii=False, indent=4)
+    dump(tags, f, ensure_ascii=True, indent=4)
+
+with open("json/tags_ascii.min.json", 'w', encoding='utf-8') as f:
+    dump(tags, f, ensure_ascii=True)
