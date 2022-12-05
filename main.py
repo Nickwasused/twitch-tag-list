@@ -1,5 +1,4 @@
 #!/bin/python3
-
 from dotenv import load_dotenv
 from json import loads, dump
 from os import getenv
@@ -22,8 +21,10 @@ def get_access_token():
     return loads(x.content)["access_token"]
 
 
+token = get_access_token()
+
+
 def get_all_tags():
-    token = get_access_token()
     tag_url = "https://api.twitch.tv/helix/tags/streams?first=100"
     all_tags = {}
     cursor = ""
@@ -43,24 +44,20 @@ def get_all_tags():
             cursor = content["pagination"]["cursor"]
         except KeyError:
             fetching = False
-        tmp_tags = content["data"]
-        for tag in tmp_tags:
-            tag_id = tag["tag_id"]
-            del tag["tag_id"]
-            all_tags[tag_id] = tag
+
+        all_tags.update({tag["tag_id"]: {k: v for k, v in tag.items() if k != "tag_id"} for tag in content["data"]})
 
     return all_tags
 
 
 tags = get_all_tags()
-with open("json/tags.json", 'w', encoding='utf-8') as f:
-    dump(tags, f, ensure_ascii=False, indent=4)
+files = [
+    ("json/tags.json", False, 4),
+    ("json/tags.min.json", False, None),
+    ("json/tags_ascii.json", True, 4),
+    ("json/tags_ascii.min.json", True, None),
+]
 
-with open("json/tags.min.json", 'w', encoding='utf-8') as f:
-    dump(tags, f, ensure_ascii=False)
-
-with open("json/tags_ascii.json", 'w', encoding='utf-8') as f:
-    dump(tags, f, ensure_ascii=True, indent=4)
-
-with open("json/tags_ascii.min.json", 'w', encoding='utf-8') as f:
-    dump(tags, f, ensure_ascii=True)
+for filename, use_ascii, indent in files:
+    with open(filename, "w", encoding="utf-8") as f:
+        dump(tags, f, ensure_ascii=use_ascii, indent=indent)
